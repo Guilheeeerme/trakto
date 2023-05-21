@@ -48,14 +48,14 @@ _Obs: O campo `compress` pode ter seu valor entre 0.0 e 100_.
 O response da requisição terá o seguinte modelo em caso de sucesso:
 
 ```json {
-  {
-    "localpath": {
-        "original": string,
-        "thumb": string,
-    },
-    "metadata": {
-        "ALL_EXIF_DATA_KEY": object
-    }
+{
+  "localpath": {
+    "original": "example.jpg",
+    "thumb": "example_thumb.jpg"
+  },
+  "metadata": {
+    "ALL_EXIF_DATA_KEY": {}
+  }
 }
 ```
 
@@ -65,12 +65,12 @@ Em caso de erro na requisição, o response terá o seguinte modelo:
 
 ```json
 {
-    errors: [
-        {
-            "code": number,
-            "message": string
-        }
-    ]
+  "errors": [
+    {
+      "code": 400,
+      "message": "error message"
+    }
+  ]
 }
 ```
 
