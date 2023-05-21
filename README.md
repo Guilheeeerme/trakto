@@ -59,7 +59,7 @@ O response da requisição terá o seguinte modelo em caso de sucesso:
 }
 ```
 
-A imagem original e a thumb estaram na pasta `temp` na raíz do projeto.
+A imagem original e a thumb estarão na pasta `temp` na raíz do projeto.
 
 Em caso de erro na requisição, o response terá o seguinte modelo:
 
