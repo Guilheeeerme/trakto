@@ -1,0 +1,39 @@
+services:
+  api-trakto:
+    build:
+      context: .
+    container_name: api-trakto
+    restart: always
+    entrypoint: sh -c "npm install && npm run start:dev"
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_PORT: ${MONGODB_PORT}
+    networks:
+      - trakto_network
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    ports:
+      - ${API_PORT}:${API_PORT}
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+    volumes:
+      - data:/data/db
+    ports:
+      - ${MONGODB_PORT}:${MONGODB_PORT}
+    networks:
+      - trakto_network
+
+volumes:
+  data:
+
+networks:
+  trakto_network:
