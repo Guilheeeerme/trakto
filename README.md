@@ -1,73 +1,89 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Trakto - Resolução do desafio Back-end Developer
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Pré-requisitos
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Certifique-se de ter os seguintes pré-requisitos instalados em sua máquina:
 
-## Description
+- Docker: [Instalação do Docker](https://docs.docker.com/get-docker/)
+- Docker Compose: [Instalação do Docker Compose](https://docs.docker.com/compose/install/)
+- MongoDB Compass (GUI) [Opcional]: [Instalação do MongoDB Compass (GUI)](https://www.mongodb.com/try/download/compass)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Como executar
 
-## Installation
+Siga as etapas abaixo para executar a API Node.js:
 
-```bash
-$ npm install
+1. Clone este repositório para sua máquina:
+
+```shell
+$ git clone git@github.com:Guilheeeerme/trakto.git
 ```
 
-## Running the app
+2. Navegue até o diretório do projeto:
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```shell
+$ cd trakto/
 ```
 
-## Test
+3. Renomeie o arquivo `.env.example` para `.env` e preencha o valor da variável `API_PORT` para definir em qual porta sua API irá executar.
 
-```bash
-# unit tests
-$ npm run test
+4. Execute o seguinte comando para construir as imagens e iniciar os contêineres:
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```shell
+$ docker-compose up -d
 ```
 
-## Support
+5. Aguarde até que os contêineres sejam iniciados e a API esteja pronta para uso.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+6. Faça uma requisição POST no endpoint `http://localhost:<PORTA>/image/save`, onde `<PORTA>` é a porta configurada no arquivo `.env`, com o modelo de body abaixo:
 
-## Stay in touch
+```json {
+{
+  "image": "https://assets.storage.trakto.io/AkpvCuxXGMf3npYXajyEZ8A2APn2/0e406885-9d03-4c72-bd92-c6411fbe5c49.jpeg",
+  "compress": 80
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+_Obs: O campo `compress` pode ter seu valor entre 0.0 e 100_.
 
-## License
+O response da requisição terá o seguinte modelo em caso de sucesso:
 
-Nest is [MIT licensed](LICENSE).
+```json {
+  {
+    "localpath": {
+        "original": string,
+        "thumb": string,
+    },
+    "metadata": {
+        "ALL_EXIF_DATA_KEY": object
+    }
+}
+```
+
+A imagem original e a thumb estaram na pasta `temp` na raíz do projeto.
+
+Em caso de erro na requisição, o response terá o seguinte modelo:
+
+```json
+{
+    errors: [
+        {
+            "code": number,
+            "message": string
+        }
+    ]
+}
+```
+
+8. Você pode conectar no MongoDB Compass com a seguinte uri: `mongodb://localhost:27017`, e ver as informações do exif da imagem original, no documento que foi inserido no banco de dados. Exemplo:
+
+![](evidência.PNG)
+
+## Como parar
+
+Para parar e remover os contêineres da API, execute o seguinte comando no diretório do projeto:
+
+```shell
+$ docker-compose down
+```
+
+Isso encerrará os contêineres e liberará os recursos utilizados.
