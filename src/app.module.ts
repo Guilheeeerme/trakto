@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
 
 import { ImagesModule } from './images/images.module';
+import { ValidationErrorFilter } from './errors/validation-error-filter';
 
 @Module({
   imports: [
@@ -20,6 +22,11 @@ import { ImagesModule } from './images/images.module';
     ImagesModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: ValidationErrorFilter,
+    },
+  ],
 })
 export class AppModule {}
