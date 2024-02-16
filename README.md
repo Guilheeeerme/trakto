@@ -1,4 +1,18 @@
-# Trakto - Resolução do desafio Back-end Developer
+# Desafio Back-end Developer
+
+## Objetivo
+
+Desenvolver uma API Rest com um único end-point utilizando o framework NestJS e MongoDB. Realizar a tarefa como descrito a seguir
+
+## Descrição do recurso
+
+O end-point deve receber uma url pública de uma imagem JPG, JPEG ou PNG, deve salvar essa imagem no sistema de arquivos e gerar uma versão reduzida da imagem (acrescentando o sufixo \_thumb ao nome do arquivo), que deve ter sua maior dimensão com 720px e a dimensão menor proporcional. Caso a maior dimensão seja inferior a 720px, apenas uma cópia da imagem original deve ser feita com o sufixo no nome do arquivo.
+
+A imagem reduzida deve ter compactação e o fator deve ser enviado como parâmentro junto com a url da imagem original.
+
+O serviço deve também registrar numa instância do mongodb, todos os metadados contidos no [EXIF](https://tecnoblog.net/responde/o-que-sao-dados-exif-de-fotos-e-como-encontra-los-ou-esconde-los/). da imagem da imagem original.
+
+# Resolução
 
 ## Pré-requisitos
 
@@ -38,12 +52,22 @@ $ docker-compose up -d
 
 ```json {
 {
+  "image": "https://files.tecnoblog.net/wp-content/uploads/2018/09/o-que-e-exif-002-1060x596.png",
+  "compress": 80
+}
+```
+
+Ou com a URL de uma imagem que contém Exif por exemplo:
+
+```json {
+{
   "image": "https://assets.storage.trakto.io/AkpvCuxXGMf3npYXajyEZ8A2APn2/0e406885-9d03-4c72-bd92-c6411fbe5c49.jpeg",
   "compress": 80
 }
 ```
 
-_Obs: O campo `compress` pode ter seu valor entre 0.0 e 100_.
+_O campo `image` deve receber uma string com uma url pública de uma imagem JPG_.  
+_O campo `compress` deve receber um valor do tipo number entre 0.0 e 100_.
 
 O response da requisição terá o seguinte modelo em caso de sucesso:
 
