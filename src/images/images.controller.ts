@@ -20,9 +20,14 @@ export class ImagesController {
 
     const buffer = await downloadImage(data.image, `${originalImagePath}.jpg`);
     const metadata = await getMetadata(`${originalImagePath}.jpg`);
-    const exifMetadata = exif(metadata.exif);
 
-    await compressImage(originalImagePath, buffer, metadata, data.compress);
+    let exifMetadata = {};
+
+    if (metadata !== null && metadata.exif) {
+      exifMetadata = exif(metadata.exif);
+    }
+
+    await compressImage(data.image, originalImagePath, buffer, data.compress);
 
     const response: AddImageDataDto = {
       localpath: {
