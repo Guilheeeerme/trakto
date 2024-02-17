@@ -29,13 +29,13 @@ Siga as etapas abaixo para executar a API Node.js:
 1. Clone este repositório para sua máquina:
 
 ```shell
-$ git clone git@github.com:Guilheeeerme/trakto.git
+git clone git@github.com:Guilheeeerme/trakto.git
 ```
 
 2. Navegue até o diretório do projeto:
 
 ```shell
-$ cd trakto/
+cd trakto/
 ```
 
 3. Renomeie o arquivo `.env.example` para `.env` e preencha o valor da variável `API_PORT` para definir em qual porta sua API irá executar.
@@ -43,7 +43,7 @@ $ cd trakto/
 4. Execute o seguinte comando para construir as imagens e iniciar os contêineres:
 
 ```shell
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 5. Aguarde até que os contêineres sejam iniciados e a API esteja pronta para uso.
@@ -107,7 +107,7 @@ Em caso de erro na requisição, o response terá o seguinte modelo:
 Para parar e remover os contêineres da API, execute o seguinte comando no diretório do projeto:
 
 ```shell
-$ docker-compose down
+docker-compose down
 ```
 
 Isso encerrará os contêineres e liberará os recursos utilizados.
